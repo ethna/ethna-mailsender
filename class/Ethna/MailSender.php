@@ -1,19 +1,13 @@
 <?php
-// vim: foldmethod=marker
-/**
- *  MailSender.php
+/*
+ * Copyright (C) the Ethna contributors. All rights reserved.
  *
- *  @author     Masaki Fujimoto <fujimoto@php.net>
- *  @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
- *  @package    Ethna
- *  @version    $Id: 19a3758bc3e0a34a7e687dd060f6d197202ded40 $
+ * This file is part of the Ethna package, distributed under new BSD.
+ * For full terms see the included LICENSE file.
  */
 
-/** メールテンプレートタイプ: 直接送信 */
 define('MAILSENDER_TYPE_DIRECT', 0);
 
-
-// {{{ Ethna_MailSender
 /**
  *  メール送信クラス
  *
@@ -51,7 +45,6 @@ class Ethna_MailSender
     /**
      *  Ethna_MailSenderクラスのコンストラクタ
      *
-     *  @access public
      *  @param  object  Ethna_Backend   $backend       backendオブジェクト
      */
     public function __construct($backend)
@@ -63,7 +56,6 @@ class Ethna_MailSender
     /**
      *  メールオプションを設定する
      *
-     *  @access public
      *  @param  string  $option メール送信オプション
      */
     function setOption($option)
@@ -86,7 +78,6 @@ class Ethna_MailSender
      *  'content-type' 省略時は 'application/octet-stream' となる。
      *  複数添付するときは上の配列を添字0から始まるふつうの配列に入れる。
      *
-     *  @access public
      *  @param  string  $to         メール送信先アドレス (nullのときは送信せずに内容を return する)
      *  @param  string  $template   メールテンプレート名 or タイプ
      *  @param  array   $macro      テンプレートマクロ or $templateがMAILSENDER_TYPE_DIRECTのときはメール送信内容)
@@ -289,4 +280,3 @@ class Ethna_MailSender
         return $renderer;
     }
 }
-// }}}
