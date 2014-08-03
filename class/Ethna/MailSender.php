@@ -58,7 +58,7 @@ class Ethna_MailSender
      *
      *  @param  string  $option メール送信オプション
      */
-    function setOption($option)
+    public function setOption($option)
     {
         $this->option = $option;
     }
@@ -83,7 +83,7 @@ class Ethna_MailSender
      *  @param  array   $macro      テンプレートマクロ or $templateがMAILSENDER_TYPE_DIRECTのときはメール送信内容)
      *  @param  array   $attach     添付ファイル
      */
-    function send($to, $template, $macro, $attach = null)
+    public function send($to, $template, $macro, $attach = null)
     {
         // メール内容を作成
         if ($template === MAILSENDER_TYPE_DIRECT) {
@@ -125,7 +125,7 @@ class Ethna_MailSender
         // 添付ファイル (multipart)
         if ($attach !== null) {
             $attach = isset($attach[0]) ? $attach : array($attach);
-            $boundary = Ethna_Util::getRandom(); 
+            $boundary = Ethna_Util::getRandom();
             $body = "This is a multi-part message in MIME format.\n\n" .
                 "--$boundary\n" .
                 "Content-Type: text/plain; charset=iso-2022-jp\n" .
@@ -150,17 +150,17 @@ class Ethna_MailSender
                     $part['filename'] = $part['name'];
                 }
                 $part['name'] = preg_replace_callback('/([^\x00-\x7f]+)/',
-                    function(array $matches){return Ethna_Util::encode_MIME($matches[1]);}
+                    function (array $matches) {return Ethna_Util::encode_MIME($matches[1]);}
                     , $part['name']); // XXX: rfc2231
                 $part['filename'] = preg_replace_callback('/([^\x00-\x7f]+)/',
-                    function(array $matches){return Ethna_Util::encode_MIME($matches[1]);}
+                    function (array $matches) {return Ethna_Util::encode_MIME($matches[1]);}
                     , $part['filename']);
 
                 $body .=
                     "--$boundary\n" .
                     "Content-Type: " . $part['content-type'] . ";\n" .
                         "\tname=\"" . $part['name'] . "\"\n" .
-                    "Content-Transfer-Encoding: base64\n" . 
+                    "Content-Transfer-Encoding: base64\n" .
                     "Content-Disposition: attachment;\n" .
                         "\tfilename=\"" . $part['filename'] . "\"\n\n";
                 $body .= chunk_split(base64_encode($part['content']));
@@ -222,7 +222,7 @@ class Ethna_MailSender
      *  @param  array   $macro  ユーザ定義マクロ
      *  @return array   アプリケーション固有処理済みマクロ
      */
-    function _setDefaultMacro($macro)
+    public function _setDefaultMacro($macro)
     {
         return $macro;
     }
@@ -234,7 +234,7 @@ class Ethna_MailSender
      *  @param  string  $mail   メールテンプレート
      *  @return array   ヘッダ, 本文
      */
-    function _parse($mail)
+    public function _parse($mail)
     {
         list($header_line, $body) = preg_split('/\r?\n\r?\n/', $mail, 2);
         $header_line .= "\n";
@@ -249,7 +249,7 @@ class Ethna_MailSender
             $i = strtolower($key);
             $header[$i] = array();
             $header[$i][] = $key;
-            $header[$i][] = preg_replace_callback('/([^\x00-\x7f]+)/', function(array $matches){return Ethna_UTil::encode_MIME($matches[1]);}, $value);
+            $header[$i][] = preg_replace_callback('/([^\x00-\x7f]+)/', function (array $matches) {return Ethna_UTil::encode_MIME($matches[1]);}, $value);
         }
 
         $body = mb_convert_encoding($body, "ISO-2022-JP");
@@ -263,9 +263,10 @@ class Ethna_MailSender
      *  @access public
      *  @return object  Ethna_Renderer  レンダラオブジェクト
      */
-    function getRenderer()
+    public function getRenderer()
     {
         $_ret_object = $this->getTemplateEngine();
+
         return $_ret_object;
     }
 
@@ -275,10 +276,11 @@ class Ethna_MailSender
      *  @access public
      *  @return object  Ethna_Renderer  レンダラオブジェクト
      */
-    function getTemplateEngine()
+    public function getTemplateEngine()
     {
         $c = $this->backend->getController();
         $renderer = $c->getRenderer();
+
         return $renderer;
     }
 }
