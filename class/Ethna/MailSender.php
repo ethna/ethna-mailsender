@@ -82,6 +82,8 @@ class Ethna_MailSender
      *  @param  string  $template   メールテンプレート名 or タイプ
      *  @param  array   $macro      テンプレートマクロ or $templateがMAILSENDER_TYPE_DIRECTのときはメール送信内容)
      *  @param  array   $attach     添付ファイル
+     *
+     *  @throws Ethna_Exception
      */
     function send($to, $template, $macro, $attach = null)
     {
@@ -109,10 +111,8 @@ class Ethna_MailSender
             if (isset($this->def[$template])) {
                 $template = $this->def[$template];
             }
+
             $mail = $renderer->perform(sprintf('%s/%s', $this->mail_dir, $template), true);
-            if (Ethna::isError($mail)) {
-                return $mail;
-            }
         }
         if ($to === null) {
             return $mail;
